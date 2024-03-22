@@ -18,6 +18,7 @@ public class TokenService {
     private JwtEncoder jwtEncoder;
 
     @Autowired
+    @SuppressWarnings("unused")
     private JwtDecoder jwtDecoder;
 
     public String generateJwt(Authentication auth){

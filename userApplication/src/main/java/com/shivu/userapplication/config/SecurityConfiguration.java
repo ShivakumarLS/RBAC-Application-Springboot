@@ -1,9 +1,11 @@
 package com.shivu.userapplication.config;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,10 +25,19 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.shivu.userapplication.service.DepartmentService;
+import com.shivu.userapplication.service.RBACService;
 import com.shivu.userapplication.utils.RSAKeyProperties;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
+
+    @Autowired
+    DepartmentService departmentService;
+
+    @Autowired
+    RBACService rbacService;
 
     private final RSAKeyProperties keys;
 
@@ -60,8 +71,9 @@ public class SecurityConfiguration {
                 auth.requestMatchers("/ops/**").hasRole("ADMIN");
                 auth.requestMatchers("/home/**").permitAll();
                 auth.requestMatchers("/auth/welcome/**").permitAll();
-                auth.requestMatchers("/h2-console").permitAll();
+                auth.requestMatchers("/h2-console/**").permitAll();
                 auth.requestMatchers("/admin/**").hasRole("ADMIN");
+                auth.requestMatchers("/payroll/**").hasRole("PAYROLL");
                 auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
                 auth.anyRequest().authenticated();
             });

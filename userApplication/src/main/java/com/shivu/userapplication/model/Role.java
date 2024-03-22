@@ -1,6 +1,6 @@
 package com.shivu.userapplication.model;
-import org.springframework.security.core.GrantedAuthority;
 
+import org.springframework.security.core.GrantedAuthority;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="roles")
-public class Role implements GrantedAuthority {
+public class Role implements GrantedAuthority{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -34,7 +34,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        // TODO Auto-generated method stub
         return this.authority;
     }
 

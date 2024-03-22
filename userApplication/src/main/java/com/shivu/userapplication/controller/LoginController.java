@@ -1,28 +1,18 @@
 package com.shivu.userapplication.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.shivu.userapplication.model.ApplicationUser;
 import com.shivu.userapplication.model.LoginDTO;
 import com.shivu.userapplication.model.LoginResponseDTO;
-import com.shivu.userapplication.model.RegistrationDTO;
 import com.shivu.userapplication.service.AuthenticationService;
-
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/auth")
-@CrossOrigin("*")
 public class LoginController {
 
 	@Autowired
@@ -41,9 +31,9 @@ public class LoginController {
 		LoginResponseDTO resp = authenticationService.loginUser(user.getUsername(), user.getPassword());
 		if (resp.getJwt().equals(""))
 			return "redirect:/auth/login?error";
-		response.addHeader("token", resp.getJwt());
+		
 		model.addAttribute("UserName", user.getUsername());
-		model.addAttribute("token", resp.getJwt());
+		
 		System.out.println(resp.getJwt());
 		return "welcome";
 	}

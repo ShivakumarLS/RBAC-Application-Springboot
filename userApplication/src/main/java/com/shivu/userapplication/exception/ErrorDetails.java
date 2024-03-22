@@ -21,7 +21,7 @@ public class ErrorDetails {
 		this.message = message;
 		this.details=details;
 	}
-
+	
 	public Date getTimestamp() {
 		return timestamp;
 	}

@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,12 +34,18 @@ public class ApplicationUser implements UserDetails{
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
     
+	@ManyToOne
+    @JoinColumn(name = "department_id") 
+    private Department department;
+
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
         name="user_role_junction",
         joinColumns = {@JoinColumn(name="user_id")},
         inverseJoinColumns = {@JoinColumn(name="role_id")}
     )
+	
+
     
     private Set<Role> authorities;
 
@@ -52,19 +59,40 @@ public class ApplicationUser implements UserDetails{
 	}
 
 
+	public Department getDepartment() {
+		return department;
+	}
+
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+
 	public ApplicationUser() {
 		super();
 		authorities = new HashSet<>();
 	}
 	
 
-	public ApplicationUser(Integer userId, String username, String password, Set<Role> authorities,String email,String resetPasswordToken) {
+	public ApplicationUser(Integer userId, String username, String password, Set<Role> authorities,Department department,String email,String resetPasswordToken) {
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
 		this.authorities = authorities;
 		this.email= email;
+		this.department=department;
+		this.resetPasswordToken=resetPasswordToken;
+	}
+
+	public ApplicationUser( String username, String password, Set<Role> authorities,Department department,String email,String resetPasswordToken) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.authorities = authorities;
+		this.email= email;
+		this.department=department;
 		this.resetPasswordToken=resetPasswordToken;
 	}
 
@@ -92,13 +120,12 @@ public class ApplicationUser implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return this.authorities;
 	}
 
+
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return this.password;
 	}
 	

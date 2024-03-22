@@ -1,6 +1,9 @@
 package com.shivu.userapplication.model;
+
+
 public class LoginResponseDTO {
     private ApplicationUser user;
+    
     private String jwt;
 
     public LoginResponseDTO(){
@@ -15,6 +18,7 @@ public class LoginResponseDTO {
     public ApplicationUser getUser(){
         return this.user;
     }
+
 
     public void setUser(ApplicationUser user){
         this.user = user;

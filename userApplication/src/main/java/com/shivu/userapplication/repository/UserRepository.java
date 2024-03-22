@@ -1,7 +1,10 @@
 package com.shivu.userapplication.repository;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.shivu.userapplication.model.ApplicationUser;
@@ -14,10 +17,9 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Integer> 
 	
 	@Transactional
 	Optional<ApplicationUser> deleteByUsername(String username);
-	
-	
 	ApplicationUser findByEmail(String email);
-	
-	
 	Optional<ApplicationUser> findByResetPasswordToken(String token);
+
+	@Query("SELECT u FROM ApplicationUser u WHERE u.department.departmentName= :departmentName")
+    ArrayList<ApplicationUser> findAllByDepartmentId(@Param("departmentName") String departmentName);
 }
