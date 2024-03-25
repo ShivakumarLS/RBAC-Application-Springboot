@@ -49,4 +49,6 @@ public class UserService implements UserDetailsService {
         user.setResetPasswordToken(null);
         userRepository.save(user);
     }
+
+    
 }

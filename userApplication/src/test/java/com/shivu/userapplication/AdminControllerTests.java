@@ -7,12 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -71,6 +75,23 @@ public class AdminControllerTests {
         assertEquals(users, actual);
     }
 
+
+    @Test
+    public void testGetUsersByDepartment() throws Exception
+    {
+        Department dept = new Department(0, "mockdept");
+        Role role = new Role(1, "mockrole");
+        Set<Role> roles = new HashSet<>(Set.of(role));
+        ApplicationUser user1 = new ApplicationUser("mockname1", "mockpass", roles,
+                dept, "mockemail@gmail.com", null);
+        ApplicationUser user2 = new ApplicationUser("mockname2", "mockpass", roles,
+                dept, "mockemail@gmail.com", null);
+        ApplicationUser user3 = new ApplicationUser("mockname3", "mockpass", roles,
+                dept, "mockemail@gmail.com", null);
+        ArrayList<ApplicationUser> users = new ArrayList<>(List.of(user1,user2,user3));
+        when(userRepository.findAllByDepartmentName(anyString())).thenReturn(users);
+        assertEquals(users,adminController.getUsersByDepartment("department"));
+    }
     @Test
     public void testGetUserById() throws Exception {
 
@@ -90,9 +111,9 @@ public class AdminControllerTests {
     public void testDeleteUserById_UserNotFound() {
         when(userRepository.findByUsername("nonexistentusername")).thenReturn(Optional.empty());
 
-        assertThrows(Exception.class, () -> {
-            adminController.deleteUserById("nonexistentusername");
-        });
+        assertThrows(Exception.class, () -> 
+            adminController.deleteUserById("nonexistentusername")
+        );
     }
 
    

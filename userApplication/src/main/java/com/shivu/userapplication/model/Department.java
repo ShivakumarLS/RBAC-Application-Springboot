@@ -1,10 +1,15 @@
 package com.shivu.userapplication.model;
 
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +21,14 @@ public class Department   {
     private Integer departmentId;
 
     private String departmentName;
+
+    @OneToMany
+    @JoinTable(
+        name="user_department_junction",
+        joinColumns = {@JoinColumn(name="dept_id")},
+        inverseJoinColumns = {@JoinColumn(name="user_id")}
+    )
+    private List<ApplicationUser> employees ;
 
     public Department() {
     }

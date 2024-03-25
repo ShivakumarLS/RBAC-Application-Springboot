@@ -1,8 +1,10 @@
 package com.shivu.userapplication.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shivu.userapplication.model.ApplicationUser;
+import com.shivu.userapplication.model.Department;
 import com.shivu.userapplication.model.DisplayEmployees;
+import com.shivu.userapplication.repository.DepartmentRepository;
 import com.shivu.userapplication.repository.UserRepository;
 
 @RestController
@@ -28,6 +32,8 @@ public class AdminController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired DepartmentRepository departmentRepository;
 
 	@GetMapping("/getusers")
 	public List<DisplayEmployees> getusers() {
@@ -47,6 +53,19 @@ public class AdminController {
 		return users;
 	}
 
+	@GetMapping("/getusers/{dept}")
+	public List<ApplicationUser> getUsersByDepartment(@PathVariable("dept") String department) throws Exception
+	{
+		ArrayList<ApplicationUser> users =  userRepository.findAllByDepartmentName(department);
+		return users;
+	}
+
+	@GetMapping("/getdepartments")
+	public Set<String> getDepartments() {
+		Set<String> departments = departmentRepository.findAll()
+		.stream().map(u->u.getDepartmentName()).collect(Collectors.toUnmodifiableSet());
+		return departments;
+	}
 	@GetMapping("/getuser/{uname}")
 	public ApplicationUser getuserById(@PathVariable("uname") String uname) throws Exception {
 		String uName = uname;

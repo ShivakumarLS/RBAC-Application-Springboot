@@ -21,5 +21,5 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Integer> 
 	Optional<ApplicationUser> findByResetPasswordToken(String token);
 
 	@Query("SELECT u FROM ApplicationUser u WHERE u.department.departmentName= :departmentName")
-    ArrayList<ApplicationUser> findAllByDepartmentId(@Param("departmentName") String departmentName);
+    ArrayList<ApplicationUser> findAllByDepartmentName(@Param("departmentName") String departmentName);
 }
